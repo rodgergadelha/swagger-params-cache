@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Swagger UI Cache",
+    "version": "1",
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ]
+}
