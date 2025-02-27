@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Swagger UI Cache",
+    "name": "Swagger Params Cache",
     "version": "1",
     "content_scripts": [
         {
