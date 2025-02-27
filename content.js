@@ -11,12 +11,12 @@ function updateSavedParams(savedParams, paramName, value) {
 }
 
 function addListenersAtInputs() {
-  let paramInputs = document.querySelectorAll("tr[data-param-name] input");
+  let paramInputs = document.querySelectorAll("table.parameters input");
 
   for(let paramInput of paramInputs) {
     paramInput.addEventListener("change", (event) => {
       let savedParams = loadSavedParams();
-      let paramName = paramInput.parentNode.parentNode.getAttribute("data-param-name");
+      let paramName = paramInput.parentNode.parentNode.querySelector(".parameter__name").innerText.replace("*", "").trim();
       let newValue = paramInput.value;
       updateSavedParams(savedParams, paramName, newValue);
       fillInputsWithSameParamName(paramName, newValue);
@@ -25,12 +25,12 @@ function addListenersAtInputs() {
 }
 
 function fillInputsWithSameParamName(referenceParamName, newValue) {
-  let paramInputs = document.querySelectorAll("tr[data-param-name] input");
+  let paramInputs = document.querySelectorAll("table.parameters input");
 
   for(let paramInput of paramInputs) {
-    let paramName = paramInput.parentNode.parentNode.getAttribute("data-param-name");
+    let paramName = paramInput.parentNode.parentNode.querySelector(".parameter__name").innerText.replace("*", "").trim();
     
-    if(paramName == referenceParamName) {
+    if(paramName === referenceParamName) {
       paramInput.value = newValue;
     }
   }
@@ -38,10 +38,10 @@ function fillInputsWithSameParamName(referenceParamName, newValue) {
 
 function fillInputs() {
   let savedParams = loadSavedParams();
-  let paramInputs = document.querySelectorAll("tr[data-param-name] input");
+  let paramInputs = document.querySelectorAll("table.parameters input");
 
   for(let paramInput of paramInputs) {
-    let paramName = paramInput.parentNode.parentNode.getAttribute("data-param-name");
+    let paramName = paramInput.parentNode.parentNode.querySelector(".parameter__name").innerText.replace("*", "").trim();
     let savedValue = savedParams[paramName];
     
     if(savedValue) {
@@ -52,7 +52,12 @@ function fillInputs() {
 }
 
 function init() {
-  const observer = new MutationObserver(() => fillInputs());
+  const observer = new MutationObserver(() => {
+    console.log("DOM changed!");
+    fillInputs();
+    addListenersAtInputs();
+  });
+  
   observer.observe(document.body, { childList: true, subtree: true });
   fillInputs();
   addListenersAtInputs();
@@ -60,3 +65,4 @@ function init() {
 
 console.log("starting...");
 window.addEventListener("load", () => setTimeout(init, 1000));
+//init();
